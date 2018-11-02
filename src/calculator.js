@@ -39,7 +39,12 @@ var calDecreMoney = (dtcurrent, duration, irate, money) => {
   let totally = []
   let monthly = []
   let interly = []
-  let payTotal =[]
+  let payTotal = []
+  datetime.push(yearcurren + '-' + monthcurren + '-' + daycurrent)
+  totally.push(0)
+  monthly.push(0)
+  interly.push(0)
+  payTotal.push(0)
   let looop = duration
   for (let i = 1; i <= looop; i++) {
     if (monthcurren + 1 > 12) {
@@ -95,6 +100,74 @@ const dataChart = (datetime, paytotal) => {
   return jsonData
 }
 /**
+ *
  * Return money in Month
  */
-export { calArrivalDate, calDecreMoney, dataChart }
+const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
+  let result = calDecreMoney(dtcurrent, duration, irate, money)
+  let resultdate = result.datetime
+  let resultmoneyly = result.paytotal
+  // Get Date 
+  let yearCr = datenow.getFullYear()
+  let monthCr = datenow.getMonth() + 1
+  // let dayCr = datenow.getDate()
+  let countDayOfMonthCr = daysInMonth(monthCr, yearCr)
+  for (let i = 0; i < resultdate.length; i++) {
+    let daeSlit = resultdate[i].split('-')
+    let day = daeSlit[2]
+    let month = daeSlit[1]
+    let year = daeSlit[0]
+    if (yearCr.toString() === year && monthCr.toString() === month) {
+      console.log(yearCr + '-' + year + '-' + monthCr + '-' + month)
+      if (i > 0 && day > 1) {
+        let beforeCount = i - 1
+        let currentCount = i
+        let beforeDate = new Date(resultdate[beforeCount])
+        let currentDate = new Date(resultdate[currentCount])
+        let countDay = daysbetween(currentDate, beforeDate) // Before total day
+        // only currenty month because i not calculator for before month
+        let totalCurrentMoney = (resultmoneyly[currentCount] / countDay) * day // total before money
+        console.log('Count Day: ' + countDay)
+        console.log('totalCurrentMoney ' + totalCurrentMoney)
+        // total current
+        let afterCount = i + 1
+        let futureDate = new Date(resultdate[afterCount])
+        let countDayAfter = daysbetween(futureDate, currentDate) // Total day after
+        let totalAfterMoney = (resultmoneyly[afterCount] / countDayAfter) * (countDayOfMonthCr - day)
+        // Calculator money daily
+        console.log('Countggcurren' + countDayAfter)
+        console.log('totalAfterMoney' + totalAfterMoney)
+        console.log('countDayOfMonthCr' + countDayOfMonthCr)
+        let moneyDaily = Math.round((totalCurrentMoney + totalAfterMoney) / countDayOfMonthCr)
+
+        return { moneyDaily, countDayOfMonthCr }
+      }
+      if (i > 0 && day === '1') {
+        let moneyMonthly = Math.round(resultmoneyly[i] / countDayOfMonthCr)
+        return { moneyMonthly, countDayOfMonthCr }
+      }
+      if (i === 0) {
+        let moneyMonthly = Math.round(resultmoneyly[i] / countDayOfMonthCr)
+        return { moneyMonthly, countDayOfMonthCr }
+      }
+    }
+  }
+}
+/**
+ * Count day between Date
+ * date1 current
+ * date2 past
+ */
+const daysbetween = (date1, date2) => {
+  let oneDay = 24 * 60 * 60 * 1000 // hours*minutes*seconds*milliseconds
+  let diffDays = Math.round(Math.abs((date1.getTime() - date2.getTime()) / (oneDay)))
+  return diffDays
+}
+/**
+ * Count Day of Month
+ */
+function daysInMonth(month, year) {
+  return new Date(year, month, 0).getDate()
+}
+
+export { calArrivalDate, calDecreMoney, dataChart, daysbetween, daysInMonth, calMoneyDayMonth }
