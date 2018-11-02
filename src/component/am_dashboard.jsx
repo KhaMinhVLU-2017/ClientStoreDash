@@ -7,8 +7,8 @@ import { Col } from 'reactstrap'
 class AmDashboard extends Component {
   render () {
     let dateMeo = new Date('2018-10-3')
-    let meo = calMoneyDayMonth('1-9-2018', 35, 5, 1000000, dateMeo)
-    let tango = calDecreMoney('1-9-2018', 35, 0, 1000000)
+    let meo = calMoneyDayMonth('2018-9-1', 35, 5, 1000000, dateMeo)
+    let tango = calDecreMoney('2018-9-1', 35, 0, 1000000)
     // Map design date comportable with chart
     let json = {}
     for (let i = 1; i <= meo.countDayOfMonthCr; i++) {

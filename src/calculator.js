@@ -28,9 +28,9 @@ var calArrivalDate = (dtcurrent, duration) => {
 */
 var calDecreMoney = (dtcurrent, duration, irate, money) => {
   let datem = dtcurrent.split('-')
-  let yearcurren = parseInt(datem[2])
+  let yearcurren = parseInt(datem[0])
   let monthcurren = parseInt(datem[1])
-  let daycurrent = parseInt(datem[0])
+  let daycurrent = parseInt(datem[2])
   let moneyMonthly
   let interestly
   let total = money
