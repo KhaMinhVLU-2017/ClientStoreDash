@@ -23,7 +23,9 @@ var calArrivalDate = (dtcurrent, duration) => {
   }
   return (daycurrent + '-' + Math.floor(monthcurren) + '-' + Math.floor(yearcurren))
 }
-
+/*
+** Calculator monthly interest and money
+*/
 var calDecreMoney = (dtcurrent, duration, irate, money) => {
   let datem = dtcurrent.split('-')
   let yearcurren = parseInt(datem[2])
@@ -37,6 +39,7 @@ var calDecreMoney = (dtcurrent, duration, irate, money) => {
   let totally = []
   let monthly = []
   let interly = []
+  let payTotal =[]
   let looop = duration
   for (let i = 1; i <= looop; i++) {
     if (monthcurren + 1 > 12) {
@@ -56,6 +59,7 @@ var calDecreMoney = (dtcurrent, duration, irate, money) => {
     /**
      * Round except after .
      */
+    let payCal = Math.round(moneyMonthly + interestly)
     let lamtronTotal = Math.round(total)
     let lamtronMonthy = Math.round(moneyMonthly)
     let lamtronInterst = Math.round(interestly)
@@ -64,10 +68,33 @@ var calDecreMoney = (dtcurrent, duration, irate, money) => {
     totally.push(lamtronTotal)
     interly.push(lamtronInterst)
     monthly.push(lamtronMonthy)
+    payTotal.push(payCal)
     // console.log(lamtronTime + '  Total: ' + lamtronTotal + '   Monthly: ' + lamtronMonthy + '    Interst: ' + lamtronInterst )
   }
-  let finalArr = [[...datetime], [...totally], [...monthly], [...interly]]
+
+  let finalArr = {
+    'datetime': [...datetime],
+    'totally': [...totally],
+    'monthly': [...monthly],
+    'interest': [...interly],
+    'paytotal': [...payTotal]
+  }
   return finalArr
 }
-
-export { calArrivalDate, calDecreMoney }
+/**
+ * return date comfortable JSON
+ * Datetime: paytotal
+ */
+const dataChart = (datetime, paytotal) => {
+  let count = 0
+  let jsonData = {}
+  for (var item of datetime) {
+    jsonData[item] = paytotal[count]
+    count++
+  }
+  return jsonData
+}
+/**
+ * Return money in Month
+ */
+export { calArrivalDate, calDecreMoney, dataChart }
