@@ -34,7 +34,12 @@ var calDecreMoney = (dtcurrent, duration, irate, money) => {
   let moneyMonthly
   let interestly
   let total = money
-  let ratemonthly = (irate * 1 / 100) / 12
+  let ratemonthly
+  if (irate === 0) {
+    ratemonthly = 0
+  } else {
+    ratemonthly = (irate * 1 / 100) / 12
+  }
   let datetime = []
   let totally = []
   let monthly = []
@@ -118,7 +123,7 @@ const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
     let month = daeSlit[1]
     let year = daeSlit[0]
     if (yearCr.toString() === year && monthCr.toString() === month) {
-      console.log(yearCr + '-' + year + '-' + monthCr + '-' + month)
+      // console.log(yearCr + '-' + year + '-' + monthCr + '-' + month)
       if (i > 0 && day > 1) {
         let beforeCount = i - 1
         let currentCount = i
@@ -127,17 +132,17 @@ const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
         let countDay = daysbetween(currentDate, beforeDate) // Before total day
         // only currenty month because i not calculator for before month
         let totalCurrentMoney = (resultmoneyly[currentCount] / countDay) * day // total before money
-        console.log('Count Day: ' + countDay)
-        console.log('totalCurrentMoney ' + totalCurrentMoney)
+        // console.log('Count Day: ' + countDay)
+        // console.log('totalCurrentMoney ' + totalCurrentMoney)
         // total current
         let afterCount = i + 1
         let futureDate = new Date(resultdate[afterCount])
         let countDayAfter = daysbetween(futureDate, currentDate) // Total day after
         let totalAfterMoney = (resultmoneyly[afterCount] / countDayAfter) * (countDayOfMonthCr - day)
         // Calculator money daily
-        console.log('Countggcurren' + countDayAfter)
-        console.log('totalAfterMoney' + totalAfterMoney)
-        console.log('countDayOfMonthCr' + countDayOfMonthCr)
+        // console.log('Countggcurren' + countDayAfter)
+        // console.log('totalAfterMoney' + totalAfterMoney)
+        // console.log('countDayOfMonthCr' + countDayOfMonthCr)
         let moneyDaily = Math.round((totalCurrentMoney + totalAfterMoney) / countDayOfMonthCr)
 
         return { moneyDaily, countDayOfMonthCr }
