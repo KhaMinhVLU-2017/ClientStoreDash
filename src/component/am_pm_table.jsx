@@ -9,7 +9,7 @@ export default class AmpmTable extends React.Component {
           <tr>
             <th>#</th>
             <th>Money</th>
-            <th>Interest rate</th>
+            <th>Interest rate/year</th>
             <th>Time Begin</th>
             <th>Duration</th>
           </tr>
@@ -17,9 +17,10 @@ export default class AmpmTable extends React.Component {
         <tbody>
           <tr>
             <th scope='row'>1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>1000000</td>
+            <td>5%</td>
+            <td>3-11-2015</td>
+            <td>38</td>
           </tr>
           <tr>
             <th scope='row'>2</th>

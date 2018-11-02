@@ -112,24 +112,24 @@ const styles = theme => ({
 })
 
 class AmDrawer extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = { open: false, titleApp: 'Welcome to your Dashboard' }
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this)
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
     this.onChangeViewContent = this.onChangeViewContent.bind(this)
   }
-  onChangeViewContent(e, text) {
+  onChangeViewContent (e, text) {
     this.setState({ titleApp: text })
   }
-  handleDrawerOpen() {
+  handleDrawerOpen () {
     this.setState({ open: true })
   }
-  handleDrawerClose() {
+  handleDrawerClose () {
     this.setState({ open: false })
   }
 
-  render() {
+  render () {
     const { classes, theme } = this.props
     const arrSidebar = ['Home', 'Payment', 'Revenue', 'DashBoard']
     const arrIcon = [<HomeIcon />, <RowingIcon />, <MoneyIcon />, <ChartIcon />]
@@ -178,7 +178,7 @@ class AmDrawer extends React.Component {
           <Divider />
           <List >
             {arrSidebar.map((text, index) => (
-              <Link style={{ textDecoration: 'none' }} to={arrToPath[index]} component={arrNavCom[0]}>
+              <Link key={index} style={{ textDecoration: 'none' }} to={arrToPath[index]} component={arrNavCom[0]}>
                 <ListItem onClick={(e) => this.onChangeViewContent(e, text)} className={classNames(classes.hoverListItem)} button key={text}>
                   <ListItemIcon>{arrIcon[index]}</ListItemIcon>
                   <ListItemText primary={text} />
@@ -190,7 +190,7 @@ class AmDrawer extends React.Component {
           <List>
             {arrInvPerson.map((text, index) => (
               <ListItem onClick={(e) => this.onChangeViewContent(e, text)} className={classNames(classes.hoverListItem)} button key={text}>
-                <ListItemIcon>{arrInvIcon[index]}</ListItemIcon>
+                <ListItemIcon >{arrInvIcon[index]}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
 
