@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { calDecreMoney, dataChart, calMoneyDayMonth } from '../calculator'
+import { calDecreMoney, dataChart, calMoneyDayMonth, dataChartV2 } from '../calculator'
 import ReactChartkick, { LineChart, PieChart } from 'react-chartkick'
 import Chart from 'chart.js'
 import { Col } from 'reactstrap'
 
 class AmDashboard extends Component {
   render () {
+    // All payment
     let dateMeo = new Date('2018-11-16')
     let meo = calMoneyDayMonth('2018-9-15', 2, 5, 1000000, dateMeo)
     let tango = calDecreMoney('2018-9-15', 2, 5, 1000000)
@@ -14,6 +15,7 @@ class AmDashboard extends Component {
     for (let i = 1; i <= meo.countDayOfMonthCr; i++) {
       json['2018-9' + '-' + i] = parseInt(meo.moneyMonthly)
     }
+    let cumeo = dataChartV2(15641, 30)
     let jsonChart2 = dataChart(tango.datetime, tango.paytotal)
     let data = [
       { 'name': 'Payment', 'data': json },
@@ -22,6 +24,10 @@ class AmDashboard extends Component {
 
     console.log(tango)
     console.log(meo)
+    console.log(cumeo)
+    /*
+    * cost profits
+    */
     return (
       <div>
         <Col md={{ size: 8 }} xs={12} sm={{ size: 8 }}>

@@ -124,7 +124,6 @@ const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
     let month = daeSlit[1]
     let year = daeSlit[0]
     if (yearCr.toString() === year && monthCr.toString() === month && i === resultdate.length - 1) {
-      console.log('CO vao dc k')
       if (dayCr < day) {
         let moneyMonthly = (resultmoneyly[i] / countDayOfMonthCr)
         return { moneyMonthly, ' countDayOfMonthCr ': day }
@@ -186,4 +185,23 @@ function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate()
 }
 
-export { calArrivalDate, calDecreMoney, dataChart, daysbetween, daysInMonth, calMoneyDayMonth }
+/**
+ * Data Chart Version2
+ * param1: monthly money
+ * param2: daylength
+ * get current month
+ */
+const dataChartV2 = (money, daylength) => {
+  let count = 0
+  let jsonData = {}
+  // Get Date 
+  let date = new Date()
+  let yearCr = date.getFullYear()
+  let monthCr = date.getMonth() + 1
+  for (let i = 1; i <= daylength; i++) {
+    jsonData[yearCr + '-' + monthCr + '-' + i] = money
+  }
+  return jsonData
+}
+
+export { calArrivalDate, calDecreMoney, dataChart, daysbetween, daysInMonth, calMoneyDayMonth, dataChartV2 }
