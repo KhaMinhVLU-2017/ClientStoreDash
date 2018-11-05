@@ -27,6 +27,7 @@ class AmDashboard extends Component {
     console.log(cumeo)
     /*
     * cost profits
+    * get total invoice
     */
     return (
       <div>
