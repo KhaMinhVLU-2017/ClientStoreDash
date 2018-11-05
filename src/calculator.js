@@ -115,6 +115,7 @@ const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
   // Get Date 
   let yearCr = datenow.getFullYear()
   let monthCr = datenow.getMonth() + 1
+  let dayCr = datenow.getDate()
   // let dayCr = datenow.getDate()
   let countDayOfMonthCr = daysInMonth(monthCr, yearCr)
   for (let i = 0; i < resultdate.length; i++) {
@@ -122,6 +123,16 @@ const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
     let day = daeSlit[2]
     let month = daeSlit[1]
     let year = daeSlit[0]
+    if (yearCr.toString() === year && monthCr.toString() === month && i === resultdate.length - 1) {
+      console.log('CO vao dc k')
+      if (dayCr < day) {
+        let moneyMonthly = (resultmoneyly[i] / countDayOfMonthCr)
+        return { moneyMonthly, ' countDayOfMonthCr ': day }
+      }
+      if (dayCr > day) {
+        return { 'moneyMonthly': 0, 'countDayOfMonthCr': 0 }
+      }
+    }
     if (yearCr.toString() === year && monthCr.toString() === month) {
       // console.log(yearCr + '-' + year + '-' + monthCr + '-' + month)
       if (i > 0 && day > 1) {
@@ -148,11 +159,11 @@ const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
         return { moneyDaily, countDayOfMonthCr }
       }
       if (i > 0 && day === '1') {
-        let moneyMonthly = Math.round(resultmoneyly[i] / countDayOfMonthCr)
+        let moneyMonthly = Math.round(resultmoneyly[i + 1] / countDayOfMonthCr)
         return { moneyMonthly, countDayOfMonthCr }
       }
       if (i === 0) {
-        let moneyMonthly = Math.round(resultmoneyly[i] / countDayOfMonthCr)
+        let moneyMonthly = Math.round(resultmoneyly[i + 1] / countDayOfMonthCr)
         return { moneyMonthly, countDayOfMonthCr }
       }
     }
