@@ -30,7 +30,7 @@ class AmDashboard extends Component {
     * get total invoice
     */
     return (
-      <div>
+      <div style={{ background: 'white', padding: 20, boxShadow: '1px 1px 11px 6px #888888' }}>
         <Col md={{ size: 8 }} xs={12} sm={{ size: 8 }}>
           <LineChart data={data} />
         </Col>

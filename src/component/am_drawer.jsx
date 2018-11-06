@@ -29,6 +29,7 @@ import AmPayment from './am_payment'
 import AmDashboard from './am_dashboard'
 import AmRevenue from './am_revenue'
 import AmHome from './am_home'
+import AmAccount from './am_account'
 import { Route, Link } from 'react-router-dom'
 
 const drawerWidth = 240
@@ -92,6 +93,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
+    background: '#e1e1e4',
     padding: theme.spacing.unit * 3
   },
   listitem: {
@@ -133,8 +135,9 @@ class AmDrawer extends React.Component {
     const { classes, theme } = this.props
     const arrSidebar = ['Home', 'Payment', 'Revenue', 'DashBoard']
     const arrIcon = [<HomeIcon />, <RowingIcon />, <MoneyIcon />, <ChartIcon />]
-    const arrToPath = ['/admin/home', '/admin/payment', '/admin/revenue', '/admin/dashboard']
-    const arrNavCom = [<AmHome />, <AmPayment />, <AmRevenue />, <AmDashboard />]
+    const arrToPathFirst = ['/admin/home', '/admin/payment', '/admin/revenue', '/admin/dashboard']
+    const arrNavComFirst = [<AmHome />, <AmPayment />, <AmRevenue />, <AmDashboard />]
+    const arrToPathSecond = ['/admin/account', '/admin/storeinfor', '/admin/groupstaff']
     // invidual account
     const arrInvPerson = ['Account', 'Store Info', 'Group Staff']
     const arrInvIcon = [<AccountIcon />, <StoreIcon />, <GroupStaffIcon />]
@@ -178,7 +181,7 @@ class AmDrawer extends React.Component {
           <Divider />
           <List >
             {arrSidebar.map((text, index) => (
-              <Link key={index} style={{ textDecoration: 'none' }} to={arrToPath[index]} component={arrNavCom[0]}>
+              <Link key={index} style={{ textDecoration: 'none' }} to={arrToPathFirst[index]} component={arrNavComFirst[0]}>
                 <ListItem onClick={(e) => this.onChangeViewContent(e, text)} className={classNames(classes.hoverListItem)} button key={text}>
                   <ListItemIcon>{arrIcon[index]}</ListItemIcon>
                   <ListItemText primary={text} />
@@ -203,6 +206,7 @@ class AmDrawer extends React.Component {
           <Route path='/admin/payment' component={AmPayment} />
           <Route path='/admin/revenue' component={AmRevenue} />
           <Route path='/admin/dashboard' component={AmDashboard} />
+          <Route path='/admin/account' component={AmAccount} />
         </main>
       </div>
     )
