@@ -30,6 +30,8 @@ import AmDashboard from './am_dashboard'
 import AmRevenue from './am_revenue'
 import AmHome from './am_home'
 import AmAccount from './am_account'
+import AmStoreinfo from'./am_storeinfo'
+
 import { Route, Link } from 'react-router-dom'
 
 const drawerWidth = 240
@@ -207,6 +209,7 @@ class AmDrawer extends React.Component {
           <Route path='/admin/revenue' component={AmRevenue} />
           <Route path='/admin/dashboard' component={AmDashboard} />
           <Route path='/admin/account' component={AmAccount} />
+          <Route path='/admin/storeinfo' component={AmStoreinfo} />
         </main>
       </div>
     )
