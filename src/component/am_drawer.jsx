@@ -23,14 +23,14 @@ import MoneyIcon from '@material-ui/icons/AttachMoney'
 import ChartIcon from '@material-ui/icons/ShowChart'
 import AccountIcon from '@material-ui/icons/AccountCircle'
 import StoreIcon from '@material-ui/icons/Store'
-import GroupStaffIcon from '@material-ui/icons/Group'
+// import GroupStaffIcon from '@material-ui/icons/Group'
 // Import Component
 import AmPayment from './am_payment'
 import AmDashboard from './am_dashboard'
 import AmRevenue from './am_revenue'
 import AmHome from './am_home'
 import AmAccount from './am_account'
-import AmStoreinfo from'./am_storeinfo'
+import AmStoreinfo from './am_storeinfo'
 
 import { Route, Link } from 'react-router-dom'
 
@@ -116,33 +116,34 @@ const styles = theme => ({
 })
 
 class AmDrawer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = { open: false, titleApp: 'Welcome to your Dashboard' }
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this)
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
     this.onChangeViewContent = this.onChangeViewContent.bind(this)
   }
-  onChangeViewContent (e, text) {
+  onChangeViewContent(e, text) {
     this.setState({ titleApp: text })
   }
-  handleDrawerOpen () {
+  handleDrawerOpen() {
     this.setState({ open: true })
   }
-  handleDrawerClose () {
+  handleDrawerClose() {
     this.setState({ open: false })
   }
 
-  render () {
+  render() {
     const { classes, theme } = this.props
     const arrSidebar = ['Home', 'Payment', 'Revenue', 'DashBoard']
     const arrIcon = [<HomeIcon />, <RowingIcon />, <MoneyIcon />, <ChartIcon />]
     const arrToPathFirst = ['/admin/home', '/admin/payment', '/admin/revenue', '/admin/dashboard']
     const arrNavComFirst = [<AmHome />, <AmPayment />, <AmRevenue />, <AmDashboard />]
-    const arrToPathSecond = ['/admin/account', '/admin/storeinfor', '/admin/groupstaff']
+    const arrToPathSecond = ['/admin/account', '/admin/storeinfo']
+    const arrNavComSecond = [<AmAccount />, <AmStoreinfo />]
     // invidual account
-    const arrInvPerson = ['Account', 'Store Info', 'Group Staff']
-    const arrInvIcon = [<AccountIcon />, <StoreIcon />, <GroupStaffIcon />]
+    const arrInvPerson = ['Account', 'Store Info']
+    const arrInvIcon = [<AccountIcon />, <StoreIcon />]
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -183,7 +184,7 @@ class AmDrawer extends React.Component {
           <Divider />
           <List >
             {arrSidebar.map((text, index) => (
-              <Link key={index} style={{ textDecoration: 'none' }} to={arrToPathFirst[index]} component={arrNavComFirst[0]}>
+              <Link key={index} style={{ textDecoration: 'none' }} to={arrToPathFirst[index]} component={arrNavComFirst[index]}>
                 <ListItem onClick={(e) => this.onChangeViewContent(e, text)} className={classNames(classes.hoverListItem)} button key={text}>
                   <ListItemIcon>{arrIcon[index]}</ListItemIcon>
                   <ListItemText primary={text} />
@@ -194,11 +195,12 @@ class AmDrawer extends React.Component {
           <Divider />
           <List>
             {arrInvPerson.map((text, index) => (
-              <ListItem onClick={(e) => this.onChangeViewContent(e, text)} className={classNames(classes.hoverListItem)} button key={text}>
-                <ListItemIcon >{arrInvIcon[index]}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-
+              <Link key={index} style={{ textDecoration: 'none' }} to={arrToPathSecond[index]} component={arrNavComSecond[index]}>
+                <ListItem onClick={(e) => this.onChangeViewContent(e, text)} className={classNames(classes.hoverListItem)} button key={text}>
+                  <ListItemIcon >{arrInvIcon[index]}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              </Link>
             ))}
           </List>
         </Drawer>

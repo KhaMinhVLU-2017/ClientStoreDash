@@ -8,10 +8,10 @@ import {
 import AmsiTable from './am_si_table'
 
 class AmStoreinfo extends Component {
-  render() {
+  render () {
     return (
       <Row style={{ background: 'white', padding: 20, boxShadow: '1px 1px 11px 6px #888888' }}>
-        <Card md={5} sm={5} xs={5} style={{ background: '#5a96da' }}>
+        <Card md={4} sm={4} xs={4} style={{ background: '#5a96da' }}>
           <CardImg style={{ borderRadius: '50%', width: 500 }} src={LogoStore} alt='Logo Store' />
           <CardBody>
             <CardTitle>Nhi Cosmetics</CardTitle>
@@ -25,7 +25,7 @@ class AmStoreinfo extends Component {
             </CardText>
           </CardBody>
         </Card>
-        <Col md={7} xs={7} sm={7}>
+        <Col md={{size: 7}} xs={{size: 7}} sm={{size: 7}}>
           <h1>Nhi Cosmetic Group</h1>
           <br />
           <AmsiTable />
