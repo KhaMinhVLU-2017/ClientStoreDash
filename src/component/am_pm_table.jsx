@@ -1,43 +1,78 @@
 import React from 'react'
 import { Table } from 'reactstrap'
+import axios from 'axios'
+import { api } from '../config'
+import { connect } from 'react-redux'
 
-export default class AmpmTable extends React.Component {
+class AmpmTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { payments: [] }
+
+    this.getListPayment = this.getListPayment.bind(this)
+  }
+  componentDidMount() {
+    this.getListPayment()
+  }
+  getListPayment() {
+    let self = this
+    axios.get(api.local + '/api/payments')
+      .then(response => {
+        self.props.reloadProp && self.props.reload(false)
+        self.setState({ payments: response.data })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
   render () {
+    this.props.reloadProp && this.getListPayment()
+    console.log(this.props.reloadProp)
     return (
       <Table hover>
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Money</th>
-            <th>Interest rate/year</th>
+            <th>Cost (VND)</th>
+            <th>Interest rate/year (%)</th>
             <th>Begin Time</th>
-            <th>Duration</th>
+            <th>Duration (Month)</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {this.state.payments.length !== 0 ? this.state.payments.map((item, index) => {
+            return (<tr key={index}>
+              <th scope='row'>{index + 1}</th>
+              <td>{item.name}</td>
+              <td>{item.cost}</td>
+              <td>{item.interestRate}</td>
+              <td>{item.beginTime}</td>
+              <td>{item.duration}</td>
+            </tr>)
+          }) : (<tr>
             <th scope='row'>1</th>
-            <td>Tien gop xe</td>
-            <td>1000000</td>
-            <td>5%</td>
-            <td>3-11-2015</td>
-            <td>38</td>
-          </tr>
-          <tr>
-            <th scope='row'>2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope='row'>3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+            <td>null</td>
+            <td>null</td>
+            <td>null</td>
+            <td>null</td>
+            <td>null</td>
+          </tr>)
+          }
         </tbody>
       </Table>
     )
   }
 }
+
+const mapStatetoProp = state => {
+  return {
+    reloadProp: state.payment
+  }
+}
+
+const mapDispatchtoProps = dispatch => ({
+  reload: dispatch.payment.reload
+})
+
+export default connect(mapStatetoProp, mapDispatchtoProps)(AmpmTable)
