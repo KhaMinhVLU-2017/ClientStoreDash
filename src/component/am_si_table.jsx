@@ -1,12 +1,13 @@
 import React from 'react'
-import { Table } from 'reactstrap'
+import { Table, Button, Badge, Alert } from 'reactstrap'
 import axios from 'axios'
 import { api } from '../config'
+import {connect} from 'react-redux'
 
-export default class AmsiTable extends React.Component {
+class AmsiTable extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { list: [] }
+    this.state = { list: [] , message: '', error: false}
     this.getListAccount = this.getListAccount.bind(this)
   }
   componentDidMount() {
@@ -19,6 +20,7 @@ export default class AmsiTable extends React.Component {
       .then(response => {
         // console.log(response)
         if (response.data.status === 200) {
+          self.props.handlerReload(false)
           self.setState({ list: response.data.listdata })
         }
       })
@@ -26,9 +28,29 @@ export default class AmsiTable extends React.Component {
         console.log(err)
       })
   }
+  RemoveAccount (e) {
+    let _id = e.target.id
+    let self = this
+    axios.delete(api.local + '/api/user', {data: {_id}})
+    .then(response => {
+      if(response.data.status ===200) {
+        self.getListAccount()
+      } else {
+        self.setState({error: true, message: 'Excuse me..!You should rework do it again'})
+        setTimeout(()=> {
+          self.setState({error: false})
+        }, 3000)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
   render() {
+    this.props.reloadPage && this.getListAccount()
+    if (this.state.error) return (<Alert color='danger'>{this.state.message}</Alert>)
     if (this.state.list.length === 0) {
-      return (<h1>Found user in group</h1>)
+      return (<Alert color='danger'>Found user in group</Alert>)
     } else {
       return (
         <Table hover>
@@ -44,12 +66,12 @@ export default class AmsiTable extends React.Component {
           <tbody>
             {
               this.state.list.map((item, index) => {
-                return (<tr>
+                return (<tr key={index}>
                   <th scope='row'>{index + 1}</th>
                   <td>{item.username}</td>
                   <td>{item.email}</td>
-                  <td>{item.role.name}</td>
-                  <td>X</td>
+                  <td><Badge color='primary'>{item.role.name}</Badge></td>
+                  <td><Button color='danger' id={item._id} onClick={this.RemoveAccount.bind(this)}>X</Button></td>
                 </tr>)
               })
             }
@@ -59,3 +81,13 @@ export default class AmsiTable extends React.Component {
     }
   }
 }
+
+const mapStatetoProps = state => {
+  return {
+    reloadPage: state.addstaff
+  }
+}
+const mapDispatchToProps = dispatch => ({
+  handlerReload: dispatch.addstaff.reload
+})
+export default connect(mapStatetoProps, mapDispatchToProps)(AmsiTable)

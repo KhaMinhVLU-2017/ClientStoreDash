@@ -10,6 +10,7 @@ import {
 import AmsiTable from './am_si_table'
 import axios from 'axios'
 import {api} from '../config'
+import {connect} from 'react-redux'
 
 class AmStoreinfo extends Component {
   constructor(props) {
@@ -45,9 +46,9 @@ class AmStoreinfo extends Component {
       axios.post(api.local +'/api/AccountCr',{username, password, pwconfirm, email, id_group, id_roles})
       .then(response => {
         if (response.data.status===200) {
+          self.props.handerReload(true)
           self.setState({modal: false})
         }
-        console.log(response)
       })
       .catch(err => {
         console.log(err)
@@ -132,4 +133,8 @@ class AmStoreinfo extends Component {
   }
 }
 
-export default AmStoreinfo
+const mapdispatchtoProps = dispatch => ({
+  handerReload: dispatch.addstaff.reload
+})
+
+export default connect(null, mapdispatchtoProps)(AmStoreinfo)
