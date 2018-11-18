@@ -81,7 +81,7 @@ class AmrnTable extends React.Component {
           </tbody>
         </Table>
         {this.state.bill && <Modal centered={true} isOpen={this.state.modal}>
-          <ModalHeader><h3 style={{fontFamily: 'initial', fontWeight: 'bold'}}>{this.state.bill.title}</h3></ModalHeader>
+          <ModalHeader style={{fontFamily: 'initial'}}><strong>{this.state.bill.title}</strong></ModalHeader>
           <ModalBody>
             <Table borderless hover>
               <thead>

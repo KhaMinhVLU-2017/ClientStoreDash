@@ -15,8 +15,9 @@ class AmpmTable extends React.Component {
     this.getListPayment()
   }
   getListPayment() {
+    let id_store = '5bd2de667496b64ea0b41685'
     let self = this
-    axios.get(api.local + '/api/payments')
+    axios.get(api.local + '/api/payments'+id_store)
       .then(response => {
         self.props.reloadProp && self.props.reload(false)
         self.setState({ payments: response.data })
@@ -27,7 +28,7 @@ class AmpmTable extends React.Component {
   }
   render () {
     this.props.reloadProp && this.getListPayment()
-    console.log(this.props.reloadProp)
+    // console.log(this.props.reloadProp)
     return (
       <Table hover>
         <thead>

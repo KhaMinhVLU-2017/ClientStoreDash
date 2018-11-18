@@ -3,8 +3,8 @@
  * Datetime: dd-mm-yyyy
  * Function calculator Datetime Arrival when you know duration time
  */
-var calArrivalDate = (dtcurrent, duration) => {
-  let datem = dtcurrent.split('-')
+var calArrivalDate = (dtbegin, duration) => {
+  let datem = dtbegin.split('-')
   let namnew = duration / 12
   let thangle = duration % 12
   let yearcurren = parseInt(datem[2])
@@ -26,8 +26,8 @@ var calArrivalDate = (dtcurrent, duration) => {
 /*
 ** Calculator monthly interest and money
 */
-var calDecreMoney = (dtcurrent, duration, irate, money) => {
-  let datem = dtcurrent.split('-')
+var calDecreMoney = (dtbegin, duration, irate, money) => {
+  let datem = dtbegin.split('-')
   let yearcurren = parseInt(datem[0])
   let monthcurren = parseInt(datem[1])
   let daycurrent = parseInt(datem[2])
@@ -108,8 +108,8 @@ const dataChart = (datetime, paytotal) => {
  *
  * Return money in Month
  */
-const calMoneyDayMonth = (dtcurrent, duration, irate, money, datenow) => {
-  let result = calDecreMoney(dtcurrent, duration, irate, money)
+const calMoneyDayMonth = (dtbegin, duration, irate, money, datenow) => {
+  let result = calDecreMoney(dtbegin, duration, irate, money)
   let resultdate = result.datetime
   let resultmoneyly = result.paytotal
   // Get Date 
@@ -192,14 +192,14 @@ function daysInMonth(month, year) {
  * get current month
  */
 const dataChartV2 = (money, daylength) => {
-  let count = 0
+  let moneyDaily = Math.round(money / daylength)
   let jsonData = {}
   // Get Date 
   let date = new Date()
   let yearCr = date.getFullYear()
   let monthCr = date.getMonth() + 1
   for (let i = 1; i <= daylength; i++) {
-    jsonData[yearCr + '-' + monthCr + '-' + i] = money
+    jsonData[yearCr + '-' + monthCr + '-' + i] = moneyDaily
   }
   return jsonData
 }
