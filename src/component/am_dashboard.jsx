@@ -61,7 +61,6 @@ class AmDashboard extends Component {
       /**
        * Get payment and calculator
        */
-      console.log(bills)
       let sumPayments = 0
       let countDayPayment = 0
       for (let item of payments) {
@@ -87,7 +86,7 @@ class AmDashboard extends Component {
       ]
       return (
         <div style={{ background: 'white', padding: 20, boxShadow: '1px 1px 11px 6px #888888' }}>
-          <Col md={{ size: 8 }} xs={12} sm={{ size: 8 }}>
+          <Col md={{ size: 11 }} xs={10} sm={{ size: 12 }}>
             <LineChart data={data} />
           </Col>
         </div>
