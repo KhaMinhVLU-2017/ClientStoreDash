@@ -203,5 +203,37 @@ const dataChartV2 = (money, daylength) => {
   }
   return jsonData
 }
+/**
+ * Cover Data From Server Revenua return date
+ * params: List bills
+ * return date with cost
+ */
+const dateConvertBills = (bills) => {
+  let json ={}
+  for(let item of bills) {
+    let date = new Date(item.date)
+    let yearCr = date.getFullYear()
+    let monthCr = date.getMonth() + 1
+    let dayCr = date.getDate()
+    let costTotalBill = 0
+    for(let subitem of item.billDetails) {
+      costTotalBill = costTotalBill + subitem.price
+    }
+    json[yearCr + '-' + monthCr + '-' + dayCr] = costTotalBill
+  }
+  return json
+}
 
-export { calArrivalDate, calDecreMoney, dataChart, daysbetween, daysInMonth, calMoneyDayMonth, dataChartV2 }
+/**
+ * Corver Date to String on InterFace
+ * Params Date
+ */
+const dateConvertUI = (dttime) => {
+  let date = new Date(dttime)
+  let yearCr = date.getFullYear()
+  let monthCr = date.getMonth() + 1
+  let dayCr = date.getDate()
+  return yearCr + '-' + monthCr + '-' + dayCr
+
+}
+export { dateConvertUI, calArrivalDate, calDecreMoney, dataChart, daysbetween, daysInMonth, calMoneyDayMonth, dataChartV2, dateConvertBills }

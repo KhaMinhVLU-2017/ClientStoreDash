@@ -2,6 +2,7 @@ import React from 'react'
 import { Table, Badge, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import axios from 'axios'
 import { api } from '../config'
+import {dateConvertUI} from '../calculator'
 
 class AmrnTable extends React.Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class AmrnTable extends React.Component {
                 <th scope='row'>{index + 1}</th>
                 <td><Badge color='info'>{item.code}</Badge></td>
                 <td>{item.title}</td>
-                <td>{item.date}</td>
+                <td>{dateConvertUI(item.date)}</td>
                 <td>{item.user.username}</td>
                 <td>{arrayTotal[index]}</td>
                 <td><Button id={index} color='primary' onClick={this.toggle}>Detail</Button></td>

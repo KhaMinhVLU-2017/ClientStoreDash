@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { calDecreMoney, dataChart, calMoneyDayMonth, dataChartV2 } from '../calculator'
+import { calMoneyDayMonth, dataChartV2, dateConvertBills } from '../calculator'
 import ReactChartkick, { LineChart, PieChart } from 'react-chartkick'
 import Chart from 'chart.js'
 import { Col, Badge } from 'reactstrap'
@@ -39,9 +39,8 @@ class AmDashboard extends Component {
     axios.get(api.local + '/api/invoicecr' + id_store)
       .then(response => {
         if (response.status === 200) {
-          self.setState({ bills: response.InVoiceMonth })
+          self.setState({ bills: response.data.InVoiceMonth })
         }
-        // console.log(response)
       })
       .catch(err => {
         console.log(err)
@@ -62,6 +61,7 @@ class AmDashboard extends Component {
       /**
        * Get payment and calculator
        */
+      console.log(bills)
       let sumPayments = 0
       let countDayPayment = 0
       for (let item of payments) {
@@ -69,34 +69,22 @@ class AmDashboard extends Component {
         if (typeof pay !== 'undefined') {
           sumPayments = sumPayments + pay.moneyMonthly
           countDayPayment = pay.countDayOfMonthCr
-          console.log(pay)
         }
       }
       let chartPayments = dataChartV2(sumPayments, countDayPayment)
+  
+      /**
+       * Get revenua
+       */
+      let chartRevenua = dateConvertBills(bills)
+      // console.log(chartRevenua)
+      /**
+       * Draw Chart
+       */
       let data = [
         { 'name': 'Payments', 'data': chartPayments },
-        // { 'name': 'Profits', 'data': jsonChart2 }
+        { 'name': 'Profits', 'data': chartRevenua }
       ]
-      // // All payment
-      // let dateMeo = new Date('2018-11-16')
-      // let meo = calMoneyDayMonth('2018-9-15', 3, 5, 1000000, dateMeo)
-      // let tango = calDecreMoney('2018-9-15', 2, 5, 1000000)
-      // // Map design date comportable with chart
-      // let json = {}
-      // for (let i = 1; i <= meo.countDayOfMonthCr; i++) {
-      //   json['2018-9' + '-' + i] = parseInt(meo.moneyMonthly)
-      // }
-      // let cumeo = dataChartV2(15641, 30)
-      // let jsonChart2 = dataChart(tango.datetime, tango.paytotal)
-  
-
-      // console.log(timecurrent)
-      // console.log(dataChartV2(meo.moneyDaily, meo.countDayOfMonthCr))
-      // console.log(meo)
-      /*
-      * cost profits
-      * get total invoice
-      */
       return (
         <div style={{ background: 'white', padding: 20, boxShadow: '1px 1px 11px 6px #888888' }}>
           <Col md={{ size: 8 }} xs={12} sm={{ size: 8 }}>
