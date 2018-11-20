@@ -49,6 +49,7 @@ class AmStoreinfo extends Component {
           self.props.handerReload(true)
           self.setState({modal: false})
         }
+        console.log(response)
       })
       .catch(err => {
         console.log(err)
