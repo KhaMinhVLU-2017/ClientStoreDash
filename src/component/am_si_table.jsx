@@ -60,6 +60,7 @@ class AmsiTable extends React.Component {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Status</th>
               <th>Edit</th>
             </tr>
           </thead>
@@ -71,6 +72,7 @@ class AmsiTable extends React.Component {
                   <td>{item.username}</td>
                   <td>{item.email}</td>
                   <td><Badge color='primary'>{item.role.name}</Badge></td>
+                  <td>{item.status==='active'? <Badge color='success'>{item.status}</Badge>: <Badge color='warning'>{item.status}</Badge>}</td>
                   <td><Button color='danger' id={item._id} onClick={this.RemoveAccount.bind(this)}>X</Button></td>
                 </tr>)
               })
