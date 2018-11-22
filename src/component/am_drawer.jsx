@@ -39,7 +39,7 @@ const drawerWidth = 240
 const styles = theme => ({
   root: {
     display: 'flex',
-    height: '100vh'
+    height: '100%',
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -97,7 +97,8 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     background: '#e1e1e4',
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    height: '100vh'
   },
   listitem: {
     background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
