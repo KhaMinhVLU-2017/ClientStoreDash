@@ -2,7 +2,9 @@
 const webpack = require('webpack')
 const path = require('path')
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    'app': './src/index.js',
+  },
   output: {
     path: path.join(__dirname, '/dist'),
     publicPath: '/',
@@ -16,10 +18,10 @@ module.exports = {
         use: ['babel-loader']
       },
       {
-        test: /\.css$/,
+        test: /\.css$/ || /.\/src\/assert\/contents\/.css$/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader' }
+          { loader: 'css-loader' },
         ]
       },
       {
@@ -40,7 +42,17 @@ module.exports = {
             name: '/src/upload/images/[hash]-[name].[ext]'
           }
         }]
-      }
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [{
+            loader: 'file-loader',
+            options: {
+                name: './src/assert/font/[name].[ext]',
+                outputPath: 'fonts/'
+            }
+        }]
+    }
     ]
   },
   resolve: {

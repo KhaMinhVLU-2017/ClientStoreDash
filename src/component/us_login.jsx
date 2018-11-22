@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Container, Form, Input, Label, FormGroup, Button, Alert } from 'reactstrap'
-import bg from '../upload/images/bg-01.jpg'
+// import bg from '../upload/images/bg-01.jpg'
+import bg from '../upload/images/waterfall.jpg'
 import axios from 'axios'
 import { api } from '../config'
 import { Link, Redirect } from 'react-router-dom'

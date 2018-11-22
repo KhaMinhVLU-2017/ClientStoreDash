@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table } from 'reactstrap'
+import { Table, Button} from 'reactstrap'
 import axios from 'axios'
 import { api } from '../config'
 import { connect } from 'react-redux'
@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 class AmpmTable extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { payments: [] }
-
+    this.state = { payments: [] , refesh: false}
+    this.rmPayment = this.rmPayment.bind(this)
     this.getListPayment = this.getListPayment.bind(this)
   }
   componentDidMount() {
@@ -26,9 +26,25 @@ class AmpmTable extends React.Component {
         console.log(err)
       })
   }
+  rmPayment (e) {
+    let _id = e.target.id
+    let id_store = '5bd2de667496b64ea0b41685'
+    let self = this
+    axios.delete(api.local + '/api/payments', {data: {_id, id_store}})
+    .then(response => {
+      if(response.data.status === 200) {
+        let list = self.state.payments.filter(item => item._id !== _id)
+        self.setState({payments: list})
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
   render () {
     this.props.reloadProp && this.getListPayment()
     // console.log(this.props.reloadProp)
+    // console.table(this.state.payments)
     return (
       <Table hover>
         <thead>
@@ -39,6 +55,7 @@ class AmpmTable extends React.Component {
             <th>Interest rate/year (%)</th>
             <th>Begin Time</th>
             <th>Duration (Month)</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -50,9 +67,11 @@ class AmpmTable extends React.Component {
               <td>{item.interestRate}</td>
               <td>{item.beginTime}</td>
               <td>{item.duration}</td>
+              <td><Button id={item._id} onClick={this.rmPayment} color='danger'>X</Button></td>
             </tr>)
           }) : (<tr>
             <th scope='row'>1</th>
+            <td>null</td>
             <td>null</td>
             <td>null</td>
             <td>null</td>
