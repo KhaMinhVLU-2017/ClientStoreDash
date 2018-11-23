@@ -19,3 +19,14 @@
     font-family: 'IndieFlower';
     src: url('../font/IndieFlower.ttf');
 }
+
+/*
+*   Style css for User
+*/
+.us-home-product-title {
+  font-family: 'Parisienne';
+  text-align: center;
+  font-weight: bold;
+  margin: 50px 0;
+  width: 100%;
+}

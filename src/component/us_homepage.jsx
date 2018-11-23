@@ -1,16 +1,58 @@
 import React, { Component } from 'react'
-import { Row, Col } from 'reactstrap'
+import {
+    Row, Col, Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from 'reactstrap'
+import UsHomeProduct from './us_home_product'
 
 class UserHomePage extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { isOpen: false }
+        this.toggle = this.toggle.bind(this)
+    }
+    toggle() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        })
+    }
     render() {
         return (
             <Row>
-                <Col md={3} xs={3} sx={3}>
-                    <ul>
-                        <li></li>
-                    </ul>
+                <Col xs={12} md={12} sm={12}>
+                    <Navbar color='danger' light expand="md">
+                        <NavbarBrand href="/">Cosmetics Store</NavbarBrand>
+                        <NavbarToggler onClick={this.toggle} />
+                        <Collapse isOpen={this.state.isOpen} navbar>
+                            <Nav className="ml-auto" navbar>
+                                <UncontrolledDropdown nav inNavbar>
+                                    <DropdownToggle nav caret>
+                                        JudasFate
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem>
+                                            Profile
+                                        </DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem>
+                                            Logout
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </Nav>
+                        </Collapse>
+                    </Navbar>
                 </Col>
-                <Col md={9} xs={9} sx={9}>Content</Col>
+                <UsHomeProduct />
             </Row>
         )
     }
