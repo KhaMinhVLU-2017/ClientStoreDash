@@ -46,10 +46,9 @@ class HomePage extends Component {
       ['Trí giả nhạo thuỷ, nhân giả nhạo sơn','Lão Tử']
     ]
     let numberRandom = getRandomArbitrary(0,22)
-    console.log(getRandomArbitrary(1,10))
+    // console.log(getRandomArbitrary(1,10))
     return (
       <div>
-         <Row >
           <img src={bg} style={{ width: '100vw', position: 'relative', height: '100vh', filter: 'brightness(50%)' }} alt='img' />
           <Col style={{ position: 'absolute', maxWidth: 500, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
             <h1 style={styleHeader}>WELLCOME TO WEBSITE</h1>
@@ -59,7 +58,6 @@ class HomePage extends Component {
             </Col>
             <Link to='/login'><p>Login</p></Link>
           </Col>
-        </Row>
       </div>
     )
   }

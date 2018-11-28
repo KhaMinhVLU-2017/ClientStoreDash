@@ -84,7 +84,7 @@ class UserLogin extends Component {
               <Alert color={this.state.color}>{this.state.message}</Alert>
               <Button type='submit' id='btn_login' style={styleButton} >LOGIN</Button>
             </Form>
-            <Link to='/register'><p style={{ float: 'right' }}>Are you not account ?</p></Link>
+            <Link to='/register'><p style={{ float: 'right' }}>Are you forget password ?</p></Link>
           </Col>
         </Row>
       </Container>

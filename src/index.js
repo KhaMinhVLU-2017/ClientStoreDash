@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Provider } from 'react-redux'
 import { init } from '@rematch/core'
@@ -15,6 +15,9 @@ import AmDrawer from './component/am_drawer'
 // Import Component of User
 import UserHomePage from './component/us_homepage'
 import UserLogin from './component/us_login'
+import ErrorNotFound from './component/error'
+//Async await
+import 'babel-polyfill'
 
 const store = init({
   models
@@ -24,11 +27,14 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Fragment>
-        <Route exact path='/' component={HomePage} />
-        <Route path='/login' render={props => <UserLogin {...props} />} />
-        <Route path='/home' render= {props => <UserHomePage {...props} />} />
-        {/* <Route path='/register' render={props => <UserRegister {...props} />} /> */}
-        <Route path='/admin' component={AmDrawer} />
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/login' render={props => <UserLogin {...props} />} />
+          <Route path='/home' render={props => <UserHomePage {...props} />} />
+          {/* <Route path='/register' render={props => <UserRegister {...props} />} /> */}
+          <Route path='/admin' component={AmDrawer} />
+          <Route component={ErrorNotFound} />
+        </Switch>
       </Fragment>
     </BrowserRouter>
   </Provider>

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import {
   Container, Row, Col, Table, Button
-  , Modal, ModalHeader, ModalBody, ModalFooter
+  , Modal, ModalHeader, ModalBody, ModalFooter, Alert
 } from 'reactstrap'
 import axios from 'axios'
-import { api } from '../config';
+import { api } from '../config'
 import UsHomeTable from './us_home_table'
 
 const initialState = {
-  modal: false, arrCells: []
+  modal: false, arrCells: [], error: ''
 }
 
 class UsHomeProduct extends Component {
@@ -22,7 +22,7 @@ class UsHomeProduct extends Component {
     this.submitSever = this.submitSever.bind(this)
   }
   toggle() {
-    this.setState({ modal: !this.state.modal })
+    this.setState({ modal: !this.state.modal, error: '' })
   }
   appendCell() {
     let arr = [...this.state.arrCells]
@@ -64,29 +64,47 @@ class UsHomeProduct extends Component {
   submitSever() {
     let self = this
     let { arrCells } = this.state
-    let json = []
-    for (let item of arrCells) {
-      let obj = Object.create(null)
-      for (let sub of item) {
-        let arr = sub.split('_')
-        let name = arr[0] + arr[1]
-        obj[name] = this.state[sub]
+    function getJson() {
+      let json = []
+      for (let item of arrCells) {
+        let obj = Object.create(null)
+        for (let sub of item) {
+          let arr = sub.split('_')
+          let name = arr[0] + arr[1]
+          obj[name] = self.state[sub]
+        }
+        json.push(obj)
       }
-      json.push(obj)
+      return json
     }
-    let data = json.filter(item => item.idpd !== '' && item.idqt!==0 && item.idpc!==0)
-    let id_store= '5bd2de667496b64ea0b41685'
-    let id_user = '5bd2de667496b64ea0b41682'
-    axios.post(api.local + '/api/crBill',{data, id_user, id_store})
-    .then(response => {
-      if(response.status===200) {
-        self.setState(initialState)
+    function filterData() {
+      console.log('Data Da fill')
+      return getJson().filter(item => item.idpd !== '' && item.idqt !== 0 && item.idpc !== 0)
+    }
+    function postServer(data) {
+      console.log(data)
+      let id_store = '5bd2de667496b64ea0b41685'
+      let id_user = '5bd2de667496b64ea0b41682'
+      if (data.length > 0) {
+        axios.post(api.local + '/api/crBill', { data, id_user, id_store })
+          .then(response => {
+            if (response.status === 200) {
+              self.setState(initialState)
+            }
+            console.log(response)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        self.setState({ error: 'Please input product on filed' })
       }
-      console.log(response)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    }
+    async function runAll() {
+      let data = await filterData()
+      let SubmitServer = await postServer(data)
+    }
+    runAll()
   }
   render() {
     // console.table(this.state.arrCells)
@@ -95,7 +113,7 @@ class UsHomeProduct extends Component {
         <Row>
           <h1 className='us-home-product-title'>Invoice list of the day</h1>
           <Col xs={12} sm={12} md={12}  >
-            <Button style={{margin: '20px 0'}} onClick={this.toggle} color='primary'>Create Bill</Button>
+            <Button style={{ margin: '20px 0' }} onClick={this.toggle} color='primary'>Create Bill</Button>
             <UsHomeTable />
           </Col>
           <Modal isOpen={this.state.modal} size='lg' toggle={this.toggle}>
@@ -127,6 +145,7 @@ class UsHomeProduct extends Component {
                     )}
                   </tbody>
                 </Table>
+                {this.state.error && <Alert color='danger'>{this.state.error}</Alert>}
               </Col>
             </ModalBody>
             <ModalFooter>
