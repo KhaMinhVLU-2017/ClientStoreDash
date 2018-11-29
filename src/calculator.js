@@ -192,7 +192,7 @@ function daysInMonth(month, year) {
  * get current month
  */
 const dataChartV2 = (money, daylength) => {
-  let moneyDaily = Math.round(money / daylength)
+  let moneyDaily = Math.round(money)
   let jsonData = {}
   // Get Date 
   let date = new Date()
