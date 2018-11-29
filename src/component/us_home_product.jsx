@@ -6,6 +6,7 @@ import {
 import axios from 'axios'
 import { api } from '../config'
 import UsHomeTable from './us_home_table'
+import { connect } from 'react-redux'
 
 const initialState = {
   modal: false, arrCells: [], error: ''
@@ -85,12 +86,12 @@ class UsHomeProduct extends Component {
       let id_store = '5bd2de667496b64ea0b41685'
       let id_user = '5bd2de667496b64ea0b41682'
       if (data.length > 0) {
-        axios.post(api.local + '/api/crBill', { data, id_user, id_store })
+        axios.post(api.local + '/staff/crBill', { data, id_user, id_store })
           .then(response => {
             if (response.status === 200) {
+              self.props.reload(!self.props.reloadProp)
               self.setState(initialState)
             }
-            console.log(response)
           })
           .catch(err => {
             console.log(err)
@@ -157,5 +158,14 @@ class UsHomeProduct extends Component {
     )
   }
 }
+const mapStatetoProps= state => {
+  return {
+    reloadProp: state.addInvoiceStaff
+  }
+}
+const mapDispatchtoProp = dispatch  => ({
+  reload: dispatch.addInvoiceStaff.reload
+})
 
-export default UsHomeProduct
+export default connect(mapStatetoProps,mapDispatchtoProp)(UsHomeProduct)
+
