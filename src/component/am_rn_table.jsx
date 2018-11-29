@@ -4,6 +4,11 @@ import axios from 'axios'
 import { api } from '../config'
 import {dateConvertUI} from '../calculator'
 
+const styleModal = {
+  maxWidth: '500px',
+  margin: '100px auto'
+}
+
 class AmrnTable extends React.Component {
   constructor(props) {
     super(props)
@@ -81,7 +86,7 @@ class AmrnTable extends React.Component {
             )}
           </tbody>
         </Table>
-        {this.state.bill && <Modal centered={true} isOpen={this.state.modal}>
+        {this.state.bill && <Modal style={styleModal}  isOpen={this.state.modal} toggle={() => this.setState({modal: false})}>
           <ModalHeader style={{fontFamily: 'initial'}}><strong>{this.state.bill.title}</strong></ModalHeader>
           <ModalBody>
             <Table borderless hover>

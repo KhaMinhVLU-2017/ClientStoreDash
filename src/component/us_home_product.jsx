@@ -82,7 +82,6 @@ class UsHomeProduct extends Component {
       return getJson().filter(item => item.idpd !== '' && item.idqt !== 0 && item.idpc !== 0)
     }
     function postServer(data) {
-      console.log(data)
       let id_store = '5bd2de667496b64ea0b41685'
       let id_user = '5bd2de667496b64ea0b41682'
       if (data.length > 0) {
