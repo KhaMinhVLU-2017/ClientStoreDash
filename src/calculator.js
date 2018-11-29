@@ -219,7 +219,11 @@ const dateConvertBills = (bills) => {
     for(let subitem of item.billDetails) {
       costTotalBill = costTotalBill + subitem.price
     }
-    json[yearCr + '-' + monthCr + '-' + dayCr] = costTotalBill
+    if (json.hasOwnProperty(yearCr + '-' + monthCr + '-' + dayCr)){
+      json[yearCr + '-' + monthCr + '-' + dayCr] += costTotalBill
+    }else {
+      json[yearCr + '-' + monthCr + '-' + dayCr] = costTotalBill
+    }
   }
   return json
 }

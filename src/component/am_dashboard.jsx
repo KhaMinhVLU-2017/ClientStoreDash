@@ -76,6 +76,7 @@ class AmDashboard extends Component {
        * Get revenua
        */
       let chartRevenua = dateConvertBills(bills)
+      console.log(chartRevenua)
       // console.log(chartRevenua)
       /**
        * Draw Chart
