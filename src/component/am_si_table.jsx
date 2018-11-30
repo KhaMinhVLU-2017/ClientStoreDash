@@ -2,13 +2,32 @@ import React from 'react'
 import { Table, Button, Badge, Alert } from 'reactstrap'
 import axios from 'axios'
 import { api } from '../config'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import Icocached from '@material-ui/icons/Cached'
+
+const styleIcon = {
+  position: 'relative',
+    zIndex: -1,
+    height: '25px',
+    top: 0,
+    left: 0,
+    width: '25px'
+}
+const styleButtonIco = {
+  padding: '5px',
+  position: 'relative',
+  height: '35px',
+  top: 0,
+  left: 0,
+  zIndex: 1
+}
 
 class AmsiTable extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { list: [] , message: '', error: false}
+    this.state = { list: [], message: '', error: false }
     this.getListAccount = this.getListAccount.bind(this)
+    this.reNewToken = this.reNewToken.bind(this)
   }
   componentDidMount() {
     this.getListAccount()
@@ -28,23 +47,45 @@ class AmsiTable extends React.Component {
         console.log(err)
       })
   }
-  RemoveAccount (e) {
+  reNewToken(e) {
     let _id = e.target.id
     let self = this
-    axios.delete(api.local + '/api/user', {data: {_id}})
-    .then(response => {
-      if(response.data.status ===200) {
-        self.getListAccount()
-      } else {
-        self.setState({error: true, message: 'Excuse me..!You should rework do it again'})
-        setTimeout(()=> {
-          self.setState({error: false})
-        }, 3000)
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    axios.post(api.local + '/api/renewtoken', { _id })
+      .then(response => {
+        if (response.data.status === 200) {
+          self.setState({ error: true, message: 'Renew Token for user complete' })
+          setTimeout(() => {
+            self.setState({ error: false })
+          }, 3000)
+        } else {
+          self.setState({ error: true, message: 'Excuse me..!You should rework do it again' })
+          setTimeout(() => {
+            self.setState({ error: false })
+          }, 3000)
+        }
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+  RemoveAccount(e) {
+    let _id = e.target.id
+    let self = this
+    axios.delete(api.local + '/api/user', { data: { _id } })
+      .then(response => {
+        if (response.data.status === 200) {
+          self.getListAccount()
+        } else {
+          self.setState({ error: true, message: 'Excuse me..!You should rework do it again' })
+          setTimeout(() => {
+            self.setState({ error: false })
+          }, 3000)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
   render() {
     this.props.reloadPage && this.getListAccount()
@@ -72,8 +113,8 @@ class AmsiTable extends React.Component {
                   <td>{item.username}</td>
                   <td>{item.email}</td>
                   <td><Badge color='primary'>{item.role.name}</Badge></td>
-                  <td>{item.status==='active'? <Badge color='success'>{item.status}</Badge>: <Badge color='warning'>{item.status}</Badge>}</td>
-                  <td><Button color='danger' id={item._id} onClick={this.RemoveAccount.bind(this)}>X</Button></td>
+                  <td>{item.status === 'active' ? <Badge color='success'>{item.status}</Badge> : <Badge color='warning'>{item.status}</Badge>}</td>
+                  <td><Button color='danger' id={item._id} onClick={this.RemoveAccount.bind(this)}>X</Button>&ensp;&ensp;{item.status === 'inactive' && <Button style={styleButtonIco} id={item._id} onClick={this.reNewToken} color='warning'><Icocached style={styleIcon}/></Button>}</td>
                 </tr>)
               })
             }

@@ -73,7 +73,7 @@ class AmStoreinfo extends Component {
             </CardText>
           </CardBody>
         </Card>
-        <Col md={{ size: 5 }} xs={{ size: 5 }} sm={{ size: 5 }}>
+        <Col md={{ size: 6 }} xs={{ size: 6 }} sm={{ size: 6 }}>
           <Row>
             <Col md={8}>
               <h1>Nhi Cosmetic Group</h1>
