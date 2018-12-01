@@ -11,7 +11,7 @@ import './assert/contents/myStyles.css'
  */
 import HomePage from './component/homepage'
 import AmDrawer from './component/am_drawer'
-// import UserRegister from './component/us_register'
+import ForgetPw from './component/us_forgetpw'
 // Import Component of User
 import UserHomePage from './component/us_homepage'
 import UserLogin from './component/us_login'
@@ -31,7 +31,7 @@ ReactDOM.render(
           <Route exact path='/' component={HomePage} />
           <Route path='/login' render={props => <UserLogin {...props} />} />
           <Route path='/home' render={props => <UserHomePage {...props} />} />
-          {/* <Route path='/register' render={props => <UserRegister {...props} />} /> */}
+          <Route path='/forgetpassword' render={props => <ForgetPw {...props} />} />
           <Route path='/admin' component={AmDrawer} />
           <Route component={ErrorNotFound} />
         </Switch>

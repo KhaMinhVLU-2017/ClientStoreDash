@@ -66,7 +66,7 @@ class UserLogin extends Component {
         <Row >
           <img src={bg} style={{ width: '100vw', position: 'relative', height: '100vh', filter: 'brightness(50%)' }} alt='img' />
           <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
-            <h3 style={styleHeader}>ACCOUNT LOGIN</h3>
+            <h3 style={styleHeader}>FORGET PASSWORD</h3>
             <Form onSubmit={this.onSubmitServer} style={{ background: 'white', borderRadius: 19, padding: '30px 20px' }}>
               <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
                 <Label for='email' sm={4}>Email</Label>
@@ -84,7 +84,7 @@ class UserLogin extends Component {
               <Alert color={this.state.color}>{this.state.message}</Alert>
               <Button type='submit' id='btn_login' style={styleButton} >LOGIN</Button>
             </Form>
-            <Link to='/register'><p style={{ float: 'right' }}>Are you forget password ?</p></Link>
+            <Link to='/forgetpassword'><p style={{ float: 'right' }}>Are you forget password ?</p></Link>
           </Col>
         </Row>
       </Container>

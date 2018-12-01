@@ -41,6 +41,7 @@ class AmsiTable extends React.Component {
         if (response.data.status === 200) {
           self.props.handlerReload(false)
           self.setState({ list: response.data.listdata })
+          console.log(response)
         }
       })
       .catch(err => {
@@ -101,6 +102,7 @@ class AmsiTable extends React.Component {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Number</th>
               <th>Status</th>
               <th>Edit</th>
             </tr>
@@ -112,6 +114,7 @@ class AmsiTable extends React.Component {
                   <th scope='row'>{index + 1}</th>
                   <td>{item.username}</td>
                   <td>{item.email}</td>
+                  <td>{item.infoUser.phonenumber}</td>
                   <td><Badge color='primary'>{item.role.name}</Badge></td>
                   <td>{item.status === 'active' ? <Badge color='success'>{item.status}</Badge> : <Badge color='warning'>{item.status}</Badge>}</td>
                   <td><Button color='danger' id={item._id} onClick={this.RemoveAccount.bind(this)}>X</Button>&ensp;&ensp;{item.status === 'inactive' && <Button style={styleButtonIco} id={item._id} onClick={this.reNewToken} color='warning'><Icocached style={styleIcon}/></Button>}</td>

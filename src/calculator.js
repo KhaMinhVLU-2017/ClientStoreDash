@@ -106,7 +106,7 @@ const dataChart = (datetime, paytotal) => {
 }
 /**
  *
- * Return money in Month
+ * Return money daily in Month
  */
 const calMoneyDayMonth = (dtbegin, duration, irate, money, datenow) => {
   let result = calDecreMoney(dtbegin, duration, irate, money)
@@ -125,11 +125,11 @@ const calMoneyDayMonth = (dtbegin, duration, irate, money, datenow) => {
     let year = daeSlit[0]
     if (yearCr.toString() === year && monthCr.toString() === month && i === resultdate.length - 1) {
       if (dayCr < day) {
-        let moneyMonthly = (resultmoneyly[i] / countDayOfMonthCr)
-        return { moneyMonthly, ' countDayOfMonthCr ': day }
+        let moneyDaily = (resultmoneyly[i] / countDayOfMonthCr)
+        return { moneyDaily, ' countDayOfMonthCr ': day }
       }
       if (dayCr > day) {
-        return { 'moneyMonthly': 0, 'countDayOfMonthCr': 0 }
+        return { 'moneyDaily': 0, 'countDayOfMonthCr': 0 }
       }
     }
     if (yearCr.toString() === year && monthCr.toString() === month) {
@@ -162,8 +162,8 @@ const calMoneyDayMonth = (dtbegin, duration, irate, money, datenow) => {
         return { moneyMonthly, countDayOfMonthCr }
       }
       if (i === 0) {
-        let moneyMonthly = Math.round(resultmoneyly[i + 1] / countDayOfMonthCr)
-        return { moneyMonthly, countDayOfMonthCr }
+        let moneyDaily = Math.round(resultmoneyly[i + 1] / countDayOfMonthCr)
+        return { moneyDaily, countDayOfMonthCr }
       }
     }
   }

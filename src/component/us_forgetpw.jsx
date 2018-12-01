@@ -16,7 +16,7 @@ const styleHeader = {
   color: 'white',
   marginBottom: 30
 }
-class UserRegister extends Component {
+class ForgetPw extends Component {
   constructor(props) {
     super(props)
     this.state = { username: '', password: '', email: '', check: false }
@@ -89,4 +89,4 @@ class UserRegister extends Component {
   }
 }
 
-export default UserRegister
+export default ForgetPw

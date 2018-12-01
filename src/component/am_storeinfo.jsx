@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Col, Row } from 'reactstrap'
 import LogoStore from '../upload/images/LogoNhiPNG.png'
 import {
@@ -9,16 +9,18 @@ import {
 } from 'reactstrap'
 import AmsiTable from './am_si_table'
 import axios from 'axios'
-import {api} from '../config'
-import {connect} from 'react-redux'
+import { api } from '../config'
+import { connect } from 'react-redux'
+import loading from '../upload/images/loading.gif'
 
 class AmStoreinfo extends Component {
   constructor(props) {
     super(props)
-    this.state = { modal: false, username: '', password: '', pwconfirm: '', email: '', label: false, message: '' }
+    this.state = { modal: false, username: '', password: '', pwconfirm: '', email: '', label: false, message: '', phone: '', load: false }
     this.toggle = this.toggle.bind(this)
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.submitServer = this.submitServer.bind(this)
+    this.onChangePhone = this.onChangePhone.bind(this)
   }
   toggle() {
     this.setState({ modal: !this.state.modal, username: '', password: '', pwconfirm: '', email: '', label: false, message: '' })
@@ -29,31 +31,51 @@ class AmStoreinfo extends Component {
     this.setState({ [name]: value })
     let pwconfirm = this.state.pwconfirm
     let pass = this.state.password
-    if (name === 'password' && value === pwconfirm || name === 'pwconfirm' && value === this.state.password) {
+    if (name === 'password' && value === pwconfirm || name === 'pwconfirm' && value === pass) {
       this.setState({ label: false })
-    } else if (this.state.password.length === 0 && this.state.pwconfirm.length === 0) {
+    } else if (pass.length === 0 && this.state.pwconfirm.length === 0) {
       this.setState({ label: false })
     } else {
       this.setState({ label: true, message: 'Password with Password Confirm not match' })
     }
   }
+  onChangePhone(e) {
+    let name = e.target.id
+    let value = e.target.value
+    if (/^\d+$/.test(value)) {
+      this.setState({ [name]: value })
+    }
+  }
   submitServer() {
     let self = this
+    this.setState({load: true})
     if (!this.state.label) {
-      let {username, password, pwconfirm, email} = this.state
+      let { username, password, pwconfirm, email, phone } = this.state
       let id_group = '5bd2de667496b64ea0b41684'
       let id_roles = '5bd2de667496b64ea0b41682'
-      axios.post(api.local +'/api/AccountCr',{username, password, pwconfirm, email, id_group, id_roles})
-      .then(response => {
-        if (response.data.status===200) {
-          self.props.handerReload(true)
-          self.setState({modal: false})
-        }
-        console.log(response)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      if (email.split('@').length != 1 && username.length > 0 && password.length > 0 && pwconfirm.length > 0 && phone.length > 0) {
+        axios.post(api.local + '/api/AccountCr', { username, password, pwconfirm, phone, email, id_group, id_roles })
+          .then(response => {
+            if (response.data.status === 200) {
+              self.props.handerReload(true)
+              self.setState({ modal: false, load: false })
+            } else {
+              self.setState({ message: response.data.message, label: true, load: false })
+              setTimeout(() => {
+                self.setState({ label: false })
+              }, 2000)
+            }
+            console.log(response)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        self.setState({ message: 'Please fill all field and format standard', label: true })
+        setTimeout(() => {
+          self.setState({ label: false })
+        }, 2000)
+      }
     }
   }
   render() {
@@ -96,6 +118,12 @@ class AmStoreinfo extends Component {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
+                  <Label for='phone' sm={3}>Phonenumber</Label>
+                  <Col sm={8}>
+                    <Input type='text' value={this.state.phone} onChange={this.onChangePhone} name='phone' id='phone' placeholder='Your Phonenumber' />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
                   <Label for='email' sm={3}>Email</Label>
                   <Col sm={8}>
                     <Input type='email' value={this.state.email} onChange={this.onChangeHandler} name='email' id='email' placeholder='Your email' />
@@ -118,12 +146,21 @@ class AmStoreinfo extends Component {
             </ModalBody>
             <ModalFooter>
               <Row>
-                <Col md={5}>
-                  <Button onClick={this.submitServer} color='success'>Save</Button>
-                </Col>
-                <Col md={5}>
-                  <Button onClick={this.toggle} color='danger'>Cancel</Button>
-                </Col>
+                {
+                  this.state.load ?
+                    <Col md={12} sm={12} xs={12}>
+                      <img style={{ height: 100 }} src={loading} />
+                    </Col>
+                    :
+                    <Fragment>
+                      <Col md={5}>
+                        <Button onClick={this.submitServer} color='success'>Save</Button>
+                      </Col>
+                      <Col md={5}>
+                        <Button onClick={this.toggle} color='danger'>Cancel</Button>
+                      </Col>
+                    </Fragment>
+                }
               </Row>
             </ModalFooter>
           </Modal>

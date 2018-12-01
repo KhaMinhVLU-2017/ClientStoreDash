@@ -66,12 +66,11 @@ class AmDashboard extends Component {
       for (let item of payments) {
         let pay = calMoneyDayMonth(item.beginTime, item.duration, item.interestRate, item.cost, formatTimeCurrent)
         if (typeof pay !== 'undefined') {
-          sumPayments = sumPayments + pay.moneyMonthly
+          sumPayments = sumPayments + pay.moneyDaily
           countDayPayment = pay.countDayOfMonthCr
         }
       }
       let chartPayments = dataChartV2(sumPayments, countDayPayment)
-  
       /**
        * Get revenua
        */
