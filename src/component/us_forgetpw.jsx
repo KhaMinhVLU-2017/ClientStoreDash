@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Container, Form, Input, Label, FormGroup, Button } from 'reactstrap'
+import { Row, Col, Container, Alert, Form, Input, Label, FormGroup, Button } from 'reactstrap'
 import bg from '../upload/images/bg-01.jpg'
 import axios from 'axios'
 import { api } from '../config'
@@ -19,22 +19,24 @@ const styleHeader = {
 class ForgetPw extends Component {
   constructor(props) {
     super(props)
-    this.state = { username: '', password: '', email: '', check: false }
+    this.state = { phone: '', email: '', check: false, message: '', emptyEmail: false }
     this.onSubmitServer = this.onSubmitServer.bind(this)
     this.onHandlerChange = this.onHandlerChange.bind(this)
   }
   onSubmitServer(e) {
     e.preventDefault()
-    let username = this.state.username
-    let password = this.state.password
-    let email = this.state.email
+    let { email, phone } = this.state
     let self = this
-    axios.post(api.url + '/api/register', { username, password, email })
+    axios.post(api.local + '/staff/forgetpw', { phone, email })
       .then(response => {
         if (response.data.status === 200) {
-          self.setState({ check: true })
+          self.setState({ check: true, message: 'Please check your\'s email and' })
+        } else {
+          self.setState({ emptyEmail: true, message: response.data.message })
+          setTimeout(() => {
+            self.setState({ emptyEmail: false })
+          }, 2000)
         }
-        console.log(response)
       })
       .catch(err => {
         if (err) console.log(err)
@@ -42,9 +44,17 @@ class ForgetPw extends Component {
 
   }
   onHandlerChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
+    let name = e.target.id
+    let value = e.target.value
+    if (name !== 'phone') {
+      this.setState({
+        [name]: value
+      })
+    } else if (/^\d+$/.test(value)) {
+      this.setState({
+        [name]: value
+      })
+    }
   }
   render() {
     return (
@@ -53,35 +63,34 @@ class ForgetPw extends Component {
           <img src={bg} style={{ width: '100vw', position: 'relative', height: '100vh', filter: 'brightness(50%)' }} alt='img' />
           {this.state.check ?
             <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
-              <h3 style={styleHeader}>Please verify email and <Link to='/'>Login</Link></h3>
+              <h3 style={styleHeader}>{this.state.message}&ensp;<Link to='/'>Login</Link></h3>
             </Col>
             :
-            <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
-              <h3 style={styleHeader}>REGISTER</h3>
-              <Form onSubmit={this.onSubmitServer} style={{ background: 'white', borderRadius: 19, padding: '30px 20px' }}>
-                <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
-                  <Label for='username' sm={4}>Username</Label>
-                  <Col sm={8}>
-                    <Input value={this.state.username} onChange={this.onHandlerChange} type='text' name='username' id='username' placeholder='User name' />
-                  </Col>
-                </FormGroup>
-                <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
-                  <Label for='email' sm={4}>Email</Label>
-                  <Col sm={8}>
-                    <Input value={this.state.email} onChange={this.onHandlerChange} type='email' name='email' id='email' placeholder='Email' />
-                  </Col>
-                </FormGroup>
-                <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
-                  <Label for='password' sm={4}>Password</Label>
-                  <Col sm={8}>
-                    <Input value={this.state.password} onChange={this.onHandlerChange} type='password' name='password' id='password' placeholder='Password' />
-                  </Col>
-                </FormGroup>
-                <hr />
-                <Button type='submit' id='btn_login' style={styleButton} >CREATE</Button>
-              </Form>
-              <Link to='/login'><p style={{ float: 'right' }}>Are you login ?</p></Link>
-            </Col>
+            this.state.emptyEmail ?
+              <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
+                <h3 style={styleHeader}><Alert color='danger'>{this.state.message}</Alert></h3>
+              </Col>
+              :
+              <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
+                <h3 style={styleHeader}>FORGET PASSWORD</h3>
+                <Form onSubmit={this.onSubmitServer} style={{ background: 'white', borderRadius: 19, padding: '30px 20px' }}>
+                  <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
+                    <Label for='email' sm={4}>Email</Label>
+                    <Col sm={8}>
+                      <Input value={this.state.email} onChange={this.onHandlerChange} type='email' name='email' id='email' placeholder='Email' required/>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
+                    <Label for='phone' sm={4}>PhoneNumber</Label>
+                    <Col sm={8}>
+                      <Input value={this.state.phone} onChange={this.onHandlerChange} type='text' name='phone' id='phone' placeholder='Phone Number' required/>
+                    </Col>
+                  </FormGroup>
+                  <hr />
+                  <Button type='submit' id='btn_login' style={styleButton} >Submit</Button>
+                </Form>
+                <Link to='/login'><p style={{ float: 'right' }}>Are you login ?</p></Link>
+              </Col>
           }
         </Row>
       </Container>
