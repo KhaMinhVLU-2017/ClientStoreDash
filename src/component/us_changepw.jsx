@@ -4,6 +4,7 @@ import bg from '../upload/images/bg-01.jpg'
 import axios from 'axios'
 import { api } from '../config'
 import { Link, Redirect } from 'react-router-dom'
+import { withCookies } from 'react-cookie'
 
 const styleButton = {
   width: 100,
@@ -25,10 +26,12 @@ class ChangePw extends Component {
   }
   onSubmitServer(e) {
     e.preventDefault()
+    let { cookies } = this.props
+    let id_user = cookies.get('__id')
     let { newpass, oldpass, cfnewpass } = this.state
     let self = this
     // post with token ... todo
-    axios.post(api.local + '/staff/changepw', { oldpass, cfnewpass, newpass })
+    axios.post(api.local + '/staff/changepw', { oldpass, cfnewpass, newpass, id_user })
       .then(response => {
         if (response.data.status === 200) {
           self.setState({ check: true, message: 'Change password complete auto redirect to login in ' })
@@ -134,4 +137,4 @@ class Timmer extends Component {
   }
 }
 
-export default ChangePw
+export default withCookies(ChangePw)
