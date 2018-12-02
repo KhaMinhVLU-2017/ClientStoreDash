@@ -13,9 +13,11 @@ import HomePage from './component/homepage'
 import AmDrawer from './component/am_drawer'
 import ForgetPw from './component/us_forgetpw'
 // Import Component of User
-import UserHomePage from './component/us_homepage'
+import UsHomeRoute from './component/us_home_route'
+// import UserHomePage from './component/us_homepage'
 import UserLogin from './component/us_login'
 import ErrorNotFound from './component/error'
+// import ChangePw from './component/us_changepw'
 //Async await
 import 'babel-polyfill'
 
@@ -30,7 +32,8 @@ ReactDOM.render(
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/login' render={props => <UserLogin {...props} />} />
-          <Route path='/home' render={props => <UserHomePage {...props} />} />
+          <Route path='/home' render={props => <UsHomeRoute {...props} />} />
+          {/* <Route path='/home/changepw' render={props => <ChangePw {...props} />} /> */}
           <Route path='/forgetpassword' render={props => <ForgetPw {...props} />} />
           <Route path='/admin' component={AmDrawer} />
           <Route component={ErrorNotFound} />
