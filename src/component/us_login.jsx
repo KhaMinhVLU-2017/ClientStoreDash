@@ -36,10 +36,11 @@ class UserLogin extends Component {
         .then(response => {
           if (response.data.status === 200) {
             // let decode = jwt.verify(response.data.token, api.keyToken)
-            // cookies.set('__ckToken', response.data.token, { path: '/' })
-            // cookies.set('__email', decode.email, { path: '/' })
-            // cookies.set('__username', decode.username, { path: '/' })
-            // cookies.set('__id', decode._id, { path: '/' })
+            let {token, username, email, _id} = response.data
+            cookies.set('__ckToken', token, { path: '/' })
+            cookies.set('__email', email, { path: '/' })
+            cookies.set('__username', username, { path: '/' })
+            cookies.set('__id', _id, { path: '/' })
             self.setState({ login: true })
           } else {
             self.setState({ color: 'danger', message: response.data.message })
@@ -67,7 +68,7 @@ class UserLogin extends Component {
         <Row >
           <img src={bg} style={{ width: '100vw', position: 'relative', height: '100vh', filter: 'brightness(50%)' }} alt='img' />
           <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
-            <h3 style={styleHeader}>FORGET PASSWORD</h3>
+            <h3 style={styleHeader}>LOGIN</h3>
             <Form onSubmit={this.onSubmitServer} style={{ background: 'white', borderRadius: 19, padding: '30px 20px' }}>
               <FormGroup row style={{ marginTop: 30, marginBottom: 30 }}>
                 <Label for='email' sm={4}>Email</Label>
