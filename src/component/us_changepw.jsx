@@ -27,10 +27,15 @@ class ChangePw extends Component {
     e.preventDefault()
     let { newpass, oldpass, cfnewpass } = this.state
     let self = this
+    // post with token ... todo
     axios.post(api.local + '/staff/changepw', { oldpass, cfnewpass, newpass })
       .then(response => {
         if (response.data.status === 200) {
           self.setState({ check: true, message: 'Change password complete auto redirect to login in ' })
+        }else {
+          let {message} = response.data.message
+          self.setState({ label: true, message })
+          setTimeout(() => self.setState({label: false}),2000)
         }
       })
       .catch(err => {

@@ -32,7 +32,7 @@ class UserLogin extends Component {
     let email = this.state.email
     let password = this.state.password
     if (email !== '' || password !== '') {
-      axios.post(api.url + '/api/login', { email, password })
+      axios.post(api.local + '/staff/login', { email, password })
         .then(response => {
           if (response.data.status === 200) {
             // let decode = jwt.verify(response.data.token, api.keyToken)
@@ -44,6 +44,7 @@ class UserLogin extends Component {
           } else {
             self.setState({ color: 'danger', message: response.data.message })
           }
+          console.log(response)
         })
         .catch(err => {
           if (err) console.log(err)
