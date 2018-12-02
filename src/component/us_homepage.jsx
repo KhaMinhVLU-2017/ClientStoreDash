@@ -40,11 +40,11 @@ class UserHomePage extends Component {
                                     </DropdownToggle>
                                     <DropdownMenu right>
                                         <DropdownItem>
-                                            Profile
+                                            <NavLink active href='/home/changepw'>Change password</NavLink>
                                         </DropdownItem>
                                         <DropdownItem divider />
                                         <DropdownItem>
-                                            Logout
+                                            <NavLink active href='/home/changepw'>Logout</NavLink>
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
