@@ -60,6 +60,7 @@ module.exports = {
     port: 3333,
     contentBase: './public',
     hot: true,
+    host: '0.0.0.0',
     historyApiFallback: true
   },
   plugins: [

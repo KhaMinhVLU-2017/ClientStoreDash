@@ -13,12 +13,18 @@ import {
     DropdownItem
 } from 'reactstrap'
 import UsHomeProduct from './us_home_product'
+import {withCookies} from 'react-cookie'
 
 class UserHomePage extends Component {
     constructor(props) {
         super(props)
         this.state = { isOpen: false }
         this.toggle = this.toggle.bind(this)
+    }
+    componentDidMount() {
+        let {cookies} = this.props
+        let username = cookies.get('__username')
+        this.setState({username})
     }
     toggle() {
         this.setState({
@@ -36,7 +42,7 @@ class UserHomePage extends Component {
                             <Nav className="ml-auto" navbar>
                                 <UncontrolledDropdown nav inNavbar>
                                     <DropdownToggle nav caret>
-                                        JudasFate
+                                        {this.state.username}
                                     </DropdownToggle>
                                     <DropdownMenu right>
                                         <DropdownItem>
@@ -58,4 +64,4 @@ class UserHomePage extends Component {
     }
 }
 
-export default UserHomePage
+export default withCookies(UserHomePage)
