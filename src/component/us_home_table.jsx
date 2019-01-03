@@ -4,6 +4,7 @@ import { api } from '../config'
 import axios from 'axios'
 import { dateConvertUI } from '../calculator'
 import { connect } from 'react-redux'
+import {withCookies} from 'react-cookie'
 
 const styleModal = {
   maxWidth: '500px',
@@ -22,8 +23,9 @@ class UsHomeTable extends Component {
   }
   getListInvoice() {
     let self = this
-    let id_store = '5bd2de667496b64ea0b41685'
-    let id_user = '5bd2de667496b64ea0b41682'
+    const {cookies} = this.props
+    let id_user = cookies.get('__id')
+     let id_store = '5bd2de667496b64ea0b41685'
     axios.get(api.local + '/staff/invoice/' + id_user + '/' + id_store)
       .then(response => {
         if (response.data.status === 200) {
@@ -137,4 +139,4 @@ const mapStatetoProps = state => {
 const mapDispatchtoProp = dispatch => ({
   reload: dispatch.addInvoiceStaff.reload
 })
-export default connect(mapStatetoProps, mapDispatchtoProp)(UsHomeTable)
+export default withCookies(connect(mapStatetoProps, mapDispatchtoProp)(UsHomeTable))

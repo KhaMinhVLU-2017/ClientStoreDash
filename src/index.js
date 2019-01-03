@@ -20,27 +20,31 @@ import ErrorNotFound from './component/error'
 // import ChangePw from './component/us_changepw'
 //Async await
 import 'babel-polyfill'
+import { CookiesProvider } from 'react-cookie'
+
 
 const store = init({
   models
 })
 
 ReactDOM.render(
-  <Provider store={store}>
+  <CookiesProvider>
     <BrowserRouter>
-      <Fragment>
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/login' render={props => <UserLogin {...props} />} />
-          <Route path='/home' render={props => <UsHomeRoute {...props} />} />
-          {/* <Route path='/home/changepw' render={props => <ChangePw {...props} />} /> */}
-          <Route path='/forgetpassword' render={props => <ForgetPw {...props} />} />
-          <Route path='/admin' component={AmDrawer} />
-          <Route component={ErrorNotFound} />
-        </Switch>
-      </Fragment>
+      <Provider store={store}>
+        <Fragment>
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/login' render={props => <UserLogin {...props} />} />
+            <Route path='/home' render={props => <UsHomeRoute {...props} />} />
+            {/* <Route path='/home/changepw' render={props => <ChangePw {...props} />} /> */}
+            <Route path='/forgetpassword' render={props => <ForgetPw {...props} />} />
+            <Route path='/admin' component={AmDrawer} />
+            <Route component={ErrorNotFound} />
+          </Switch>
+        </Fragment>
+      </Provider>
     </BrowserRouter>
-  </Provider>
+  </CookiesProvider>
   , document.getElementById('root')
 )
 

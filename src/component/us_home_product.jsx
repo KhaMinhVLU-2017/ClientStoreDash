@@ -7,6 +7,7 @@ import axios from 'axios'
 import { api } from '../config'
 import UsHomeTable from './us_home_table'
 import { connect } from 'react-redux'
+import {withCookies} from 'react-cookie'
 
 const initialState = {
   modal: false, arrCells: [], error: ''
@@ -65,6 +66,8 @@ class UsHomeProduct extends Component {
   submitSever() {
     let self = this
     let { arrCells } = this.state
+    const {cookies} = this.props
+    let id_user = cookies.get('__id')
     function getJson() {
       let json = []
       for (let item of arrCells) {
@@ -79,12 +82,11 @@ class UsHomeProduct extends Component {
       return json
     }
     function filterData() {
-      console.log('Data Da fill')
+      // console.log('Data Da fill')
       return getJson().filter(item => item.idpd !== '' && item.idqt !== 0 && item.idpc !== 0)
     }
-    function postServer(data) {
+    function postServer(data,id_user) {
       let id_store = '5bd2de667496b64ea0b41685'
-      let id_user = '5bd2de667496b64ea0b41682'
       if (data.length > 0) {
         axios.post(api.local + '/staff/crBill', { data, id_user, id_store })
           .then(response => {
@@ -102,7 +104,7 @@ class UsHomeProduct extends Component {
     }
     async function runAll() {
       let data = await filterData()
-      let SubmitServer = await postServer(data)
+      let SubmitServer = await postServer(data,id_user)
     }
     runAll()
   }
@@ -167,5 +169,6 @@ const mapDispatchtoProp = dispatch  => ({
   reload: dispatch.addInvoiceStaff.reload
 })
 
-export default connect(mapStatetoProps,mapDispatchtoProp)(UsHomeProduct)
+export default withCookies(connect(mapStatetoProps,mapDispatchtoProp)(UsHomeProduct))
+
 
