@@ -45,7 +45,6 @@ class UserLogin extends Component {
           } else {
             self.setState({ color: 'danger', message: response.data.message })
           }
-          console.log(response)
         })
         .catch(err => {
           if (err) console.log(err)

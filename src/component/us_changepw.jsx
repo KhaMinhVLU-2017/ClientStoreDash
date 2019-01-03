@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Row, Col, Container, Alert, Form, Input, Label, FormGroup, Button } from 'reactstrap'
 import bg from '../upload/images/bg-01.jpg'
 import axios from 'axios'
@@ -59,7 +59,7 @@ class ChangePw extends Component {
     } else {
       this.setState({ label: false })
     }
-    console.table(this.state)
+    // console.table(this.state)
   }
   render() {
     let count = 30
@@ -117,7 +117,7 @@ class Timmer extends Component {
     this.setState({interVal})
   }
   timmer() {
-    console.log(this.state.count)
+    // console.log(this.state.count)
     if(this.state.count!==0) {
       let countNews = this.state.count
       countNews--
@@ -132,7 +132,9 @@ class Timmer extends Component {
       return <Redirect to={this.props.pathDirect} />
     }
     return (
-      <h3>{this.state.count}</h3>
+      <Fragment>
+        {this.state.count}
+      </Fragment>
     )
   }
 }
