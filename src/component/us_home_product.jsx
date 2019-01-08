@@ -7,10 +7,11 @@ import axios from 'axios'
 import { api } from '../config'
 import UsHomeTable from './us_home_table'
 import { connect } from 'react-redux'
-import {withCookies} from 'react-cookie'
+import { withCookies } from 'react-cookie'
+import {Redirect} from 'react-router-dom'
 
 const initialState = {
-  modal: false, arrCells: [], error: ''
+  modal: false, arrCells: [], error: '', redirect: false
 }
 
 class UsHomeProduct extends Component {
@@ -66,7 +67,7 @@ class UsHomeProduct extends Component {
   submitSever() {
     let self = this
     let { arrCells } = this.state
-    const {cookies} = this.props
+    const { cookies } = this.props
     let id_user = cookies.get('__id')
     function getJson() {
       let json = []
@@ -85,30 +86,40 @@ class UsHomeProduct extends Component {
       // console.log('Data Da fill')
       return getJson().filter(item => item.idpd !== '' && item.idqt !== 0 && item.idpc !== 0)
     }
-    function postServer(data,id_user) {
+    function postServer(data, id_user) {
       let id_store = '5bd2de667496b64ea0b41685'
-      if (data.length > 0) {
-        axios.post(api.local + '/staff/crBill', { data, id_user, id_store })
-          .then(response => {
-            if (response.status === 200) {
-              self.props.reload(!self.props.reloadProp)
-              self.setState(initialState)
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
+      let auToken = cookies.get('__ckToken')
+      if (!auToken) {
+        self.setState({redirect: true})
       } else {
-        self.setState({ error: 'Please input product on filed' })
+        axios.defaults.headers.common['Authorization'] = auToken
+        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+        if (data.length > 0) {
+          axios.post(api.local + '/staff/crBill', { data, id_user, id_store })
+            .then(response => {
+              if (response.status === 200) {
+                self.props.reload(!self.props.reloadProp)
+                self.setState(initialState)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        } else {
+          self.setState({ error: 'Please input product on filed' })
+        }
       }
     }
     async function runAll() {
       let data = await filterData()
-      let SubmitServer = await postServer(data,id_user)
+      let SubmitServer = await postServer(data, id_user)
     }
     runAll()
   }
   render() {
+    if (this.state.redirect) {
+      return (<Redirect to='/login' />)
+    }
     // console.table(this.state.arrCells)
     return (
       <Container>
@@ -160,15 +171,15 @@ class UsHomeProduct extends Component {
     )
   }
 }
-const mapStatetoProps= state => {
+const mapStatetoProps = state => {
   return {
     reloadProp: state.addInvoiceStaff
   }
 }
-const mapDispatchtoProp = dispatch  => ({
+const mapDispatchtoProp = dispatch => ({
   reload: dispatch.addInvoiceStaff.reload
 })
 
-export default withCookies(connect(mapStatetoProps,mapDispatchtoProp)(UsHomeProduct))
+export default withCookies(connect(mapStatetoProps, mapDispatchtoProp)(UsHomeProduct))
 
 
