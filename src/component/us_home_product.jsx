@@ -8,7 +8,8 @@ import { api } from '../config'
 import UsHomeTable from './us_home_table'
 import { connect } from 'react-redux'
 import { withCookies } from 'react-cookie'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import Timmer from './timmerDirect'
 
 const initialState = {
   modal: false, arrCells: [], error: '', redirect: false
@@ -90,7 +91,7 @@ class UsHomeProduct extends Component {
       let id_store = '5bd2de667496b64ea0b41685'
       let auToken = cookies.get('__ckToken')
       if (!auToken) {
-        self.setState({redirect: true})
+        self.setState({ redirect: true })
       } else {
         axios.defaults.headers.common['Authorization'] = auToken
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -103,6 +104,7 @@ class UsHomeProduct extends Component {
               }
             })
             .catch(err => {
+              self.state({ redirect: true })
               console.log(err)
             })
         } else {
@@ -118,9 +120,18 @@ class UsHomeProduct extends Component {
   }
   render() {
     if (this.state.redirect) {
-      return (<Redirect to='/login' />)
+      return (
+        <Col md={12} >
+          <Modal isOpen={this.state.redirect} toggle={this.redirect}>
+          <ModalHeader toggle={this.redirect}>Notification</ModalHeader>
+          <ModalBody>
+              <p><strong>Account is expired...!</strong></p>
+              <p>The page will redirect login after <Timmer colorMan='blue' pathDirect='/login' /></p>
+          </ModalBody>
+        </Modal>
+        </Col >
+      )
     }
-    // console.table(this.state.arrCells)
     return (
       <Container>
         <Row>
